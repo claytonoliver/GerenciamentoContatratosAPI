@@ -3,12 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Contratos.Infraestucture.Context
 {
-    public class ContratosDbContext : DbContext
+    public class DataContext : DbContext
     {
-        public ContratosDbContext(DbContextOptions<ContratosDbContext> options) : base(options)
-        {
-        }
+        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
         public DbSet<ContratoModel> Contratos { get; set; }
+        public DbSet<UsuarioModel> Usuarios { get; set; }
     }
 }

@@ -1,6 +1,7 @@
-﻿using Contratos.Application.Commands.CriarContrato.Response;
+﻿using Contratos.Application.Commands.CriarContrato;
+using Contratos.Application.Commands.CriarContrato.Request;
+using Contratos.Application.Commands.CriarContrato.Response;
 using Contratos.Application.Queries;
-using Contratos.Shared.Common.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,16 +13,26 @@ namespace GerenciamentoDeContratos.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public ContratosController(IMediator mediator, IContratoRepository contratoRepository)
+        public ContratosController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CriarContrato([FromBody] CriarContratoResponse command)
+        public async Task<IActionResult> CriarContrato([FromBody] CriarContratoCommand command)
         {
             var contratoId = await _mediator.Send(command);
-            return CreatedAtAction(nameof(ObterContrato), new { id = contratoId }, contratoId);
+
+            var response = new CriarContratoResponse(
+                contratoId,
+                command.NomeCliente,
+                command.MontanteTotal,
+                command.DataInicio,
+                command.DataFim,
+                command.Status.ToString()
+            );
+
+            return CreatedAtAction(nameof(ObterContrato), new { id = contratoId }, response);
         }
 
         [HttpGet("{id}")]

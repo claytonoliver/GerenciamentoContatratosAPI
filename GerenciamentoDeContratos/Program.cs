@@ -1,13 +1,17 @@
 using System.Text;
 using Contracts.Application.Modules;
-using Contratos.Application.Commands;
-using MediatR;
+using Contratos.Infraestucture.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<DataContext>(options =>
+                options.UseSqlServer("Data Source=GAME-PC\\SQLEXPRESS;Initial Catalog=ContractsManager_API;Integrated Security=True;Trust Server Certificate=True")
+                .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information));
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -30,7 +34,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddContratosModulo();
+
 
 var app = builder.Build();
 

@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Contratos.Domain.Enum;
 
 namespace Contratos.Domain.Entities
 {
     public class ContratoModel  
     {
+        [Key]
         public Guid Id { get; private set; }
         public string NomeCliente { get; private set; }
         public Decimal MontanteTotal { get; private set; }
         public DateTime DataInicio { get; private set; }
         public DateTime DataFim { get; private set; }
-        public string Status { get; private set; }
+        public ContratoStatusEnum Status { get; private set; }
 
         public ContratoModel(string nomeCliente,
             decimal montanteTotal, 
             DateTime dataInicio,
             DateTime dataFim,
-            string status)
+            ContratoStatusEnum status)
         {
             Id = Guid.NewGuid();
             NomeCliente = nomeCliente;
@@ -41,7 +44,7 @@ namespace Contratos.Domain.Entities
 
         public void MarcarComoConcluido()
         {
-            Status = "Concluido";
+            Status = ContratoStatusEnum.concluido;
         }
 
 
